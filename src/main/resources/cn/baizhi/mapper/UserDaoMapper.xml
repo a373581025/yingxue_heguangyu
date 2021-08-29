@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.baizhi.dao.UserDao">
+
+    <!--sql片段-->
+    <sql id="all">
+        select userid,sex,phone,username,headimg,brief,wechat,createdate,status from yx_user
+    </sql>
+    
+    <!--List<User> selectByPage(@Param("start")int start,@Param("end")int end);-->
+    <select id="selectByPage" resultType="User">
+        <include refid="all"/> limit #{start},#{end}
+    </select>
+
+    <!--List<T> selectAll();-->
+    <select id="selectAll" resultType="User">
+        select userid,sex,phone,username,headimg,brief,wechat,createdate,status from yx_user
+    </select>
+
+    <!--List<User> selectPoi();-->
+    <select id="selectPoi" resultType="User">
+        select userid,username,phone,headimg,brief from yx_user
+    </select>
+
+    <!--int queryPageNum();-->
+    <select id="queryPageNum" resultType="int">
+        select count(*) from yx_user
+    </select>
+
+    <!--T selectOneById(K k);-->
+    <select id="selectOneById" parameterType="String" resultType="User">
+        select userid,sex,phone,username,headimg,brief,wechat,createdate,status from yx_user where userid=#{userid}
+    </select>
+
+    <!--void insert(T t);-->
+    <select id="insert" parameterType="User">
+        insert into yx_user(userid,sex, phone, username, headimg, brief, wechat, createdate, status)
+        VALUES (#{userid},#{sex},#{phone},#{username},#{headimg},#{brief},#{wechat},#{createdate},#{status})
+    </select>
+
+    <!--void update(T t);-->
+    <update id="update" parameterType="User">
+        update yx_user set sex=#{sex},phone=#{phone},username=#{username},headimg=#{headimg},brief=#{brief},wechat=#{wechat},
+                           createdate=#{createdate},status=#{status} where userid=#{userid}
+    </update>
+
+    <!--void updateStauts(@Param("id")String id,@Param("status")int status);-->
+    <update id="updateStauts">
+        update yx_user set status=#{status} where userid=#{id}
+    </update>
+
+    <!--void delete(K k);-->
+    <delete id="delete" parameterType="String">
+        delete from yx_user where userid=#{id}
+    </delete>
+
+    <!--List<UserMouthVo> selectByMonth(String sex);-->
+    <select id="selectByMonth" parameterType="String" resultType="cn.baizhi.vo.UserMonthVo">
+        select month(createdate) month,count(*) count from yx_user where sex=#{sex} group by month(createdate)
+    </select>
+</mapper>

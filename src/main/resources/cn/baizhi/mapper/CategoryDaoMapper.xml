@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.baizhi.dao.CategoryDao">
+    <!--手动映射-->
+    <resultMap id="category" type="cn.baizhi.entity.Category">
+        <id column="id" property="id"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="levels" property="levels"/>
+        <result column="parent_id" property="parentId"/>
+    </resultMap>
+
+    <!--sql片段-->
+    <sql id="select">
+        select id,cate_name,levels,parent_id from yx_category
+    </sql>
+
+    <!--List<Category> selectByLevels(int levels);-->
+    <select id="selectByLevels" parameterType="int" resultMap="category">
+        <include refid="select"/> where levels=#{levels}
+    </select>
+
+    <!--List<Category> selectByParend(int parentId);-->
+    <select id="selectByParend" parameterType="int" resultMap="category">
+        <include refid="select"/> where parent_id=#{parentId}
+    </select>
+
+    <!--Category selectByName(String name);-->
+    <select id="selectByName" parameterType="String" resultMap="category">
+        <include refid="select"/> where cate_name = #{name}
+    </select>
+
+    <!--Category selectById(String id);-->
+    <select id="selectById" parameterType="String" resultMap="category">
+        <include refid="select"/> where id=#{id}
+    </select>
+
+    <!--Integer insert(Category category);-->
+    <insert id="insert" parameterType="Category">
+        insert into yx_category(id, cate_name, levels, parent_id) VALUES (#{id},#{cateName},#{levels},#{parentId})
+    </insert>
+
+    <!--void delete(K k);-->
+    <delete id="delete" parameterType="String">
+        delete from yx_category where id=#{id}
+    </delete>
+
+    <!--void update(T t);-->
+    <update id="update" parameterType="Category">
+        update yx_category set  levels=#{levels},cate_name=#{cateName},parent_id=#{parentId} where id=#{id}
+    </update>
+</mapper>
