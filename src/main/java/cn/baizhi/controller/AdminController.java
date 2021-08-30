@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -24,10 +25,10 @@ public class AdminController {
     private AdminService as;
 
     @RequestMapping("/login")
-    public Map<String, Object> login(@RequestBody Admin admin){
+    public Map<String, Object> login(@RequestBody Admin admin,HttpServletRequest request){
         log.debug(admin.getUsername());
         log.debug(admin.getPassword());
-        Map<String, Object> map = as.login(admin.getUsername(),admin.getPassword());
+        Map<String, Object> map = as.login(admin.getUsername(),admin.getPassword(),request );
 
         return map;
     }
