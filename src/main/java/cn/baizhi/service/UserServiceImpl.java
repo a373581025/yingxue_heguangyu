@@ -137,14 +137,15 @@ public class UserServiceImpl implements UserService {
             user.setHeadimg("D:\\abc\\"+substring);
         }
         Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("用户信息","学生"),User.class, list);
-
+        FileOutputStream stream = null;
         try {
-            workbook.write(new FileOutputStream(new File("D:/easypoi.xls")));
-
+            stream = new FileOutputStream("d:\\user.xls");
+            workbook.write(stream);
         } catch (IOException e) {
             e.printStackTrace();
         }finally {
             try {
+                stream.close();
                 workbook.close();
             } catch (IOException e) {
                 e.printStackTrace();
